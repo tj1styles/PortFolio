@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Loadable from "react-loadable";
+import Loader from "./Loader/Loader";
+import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 
-function App() {
+const HomeComponent = Loadable({
+  loader: () => import("./screens/HomeScreen"),
+  loading: Loader,
+});
+const HomeOutletComponent = Loadable({
+  loader: () => import("./Layouts/HomeOutlet"),
+  loading: Loader,
+});
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" exact element={<Navigate replace to='/profile' />} />
+        <Route path="/" element={<HomeComponent />}>
+            <Route path="profile" element={<HomeOutletComponent />} />
+        </Route>
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
